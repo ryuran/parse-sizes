@@ -1,22 +1,21 @@
 // Very loosely adapted from the W3C 'sizes' conformance checker at:
 // http://w3c-test.org/html/semantics/embedded-content/the-img-element/sizes/parse-a-sizes-attribute.html
 // Certain Invalid constructs like matching (), [] and {} are deliberately not handled.
-
-var tests = [
+var data = data = [
 	{
-		groupName: "No media condition",
+		groupName: 'No media condition',
 		testArray: [
-			{sizes: '',                          expect: '100vw', desc: "empty string"},
-			{sizes: ',',                         expect: '100vw', desc: "single comma"},
+			{sizes: '',                          expect: '100vw', desc: 'empty string'},
+			{sizes: ',',                         expect: '100vw', desc: 'single comma'},
 			{sizes: '-1px',                      expect: '100vw'},
-			{sizes: '1',                         expect: '100vw'}, 
+			{sizes: '1',                         expect: '100vw'},
 			{sizes: '100vw',                     expect: '100vw'},
 			{sizes: '50vh',                      expect: '50vh'},
-			{sizes: '050ch',                     expect: '050ch', desc: "leading zero"},
+			{sizes: '050ch',                     expect: '050ch', desc: 'leading zero'},
 			{sizes: '1px',                       expect: '1px'},
 			{sizes: '0',                         expect: '0'},
 			{sizes: '-0',                        expect: '-0'},
-			{sizes: '+0',                        expect: '+0', desc: "plus zero"},
+			{sizes: '+0',                        expect: '+0', desc: 'plus zero'},
 			{sizes: '+1px',                      expect: '+1px'},
 			{sizes: '.1px',                      expect: '.1px'},
 			{sizes: '0.1em',                     expect: '0.1em'},
@@ -45,21 +44,21 @@ var tests = [
 		]
 	},
 	{
-		groupName: "calc() function",
+		groupName: 'calc() function',
 		testArray: [
 			{sizes: 'calc(1px)',                 expect: 'calc(1px)'},
 			{sizes: ' calc(5px + 5px)',          expect: 'calc(5px + 5px)'},
 			{sizes: 'calc((5px + 5px)*2)',       expect: 'calc((5px + 5px)*2)'},
-			{sizes: 'calc(200px * 1.4)',         expect: 'calc(200px * 1.4)', desc: "floats in calc 1"},
-			{sizes: 'calc(20.2em + 10px)',       expect: 'calc(20.2em + 10px)', desc: "floats in calc 2"}
+      {sizes: 'calc(200px * 1.4)',         expect: 'calc(200px * 1.4)', desc: 'floats in calc 1'},
+      {sizes: 'calc(20.2em + 10px)',       expect: 'calc(20.2em + 10px)', desc: 'floats in calc 2'}
 		]
 	},
 	{
-		groupName: "Disallowed css-length units",
-		testArray: [	
-			{sizes: '0.1%',    expect: '100vw'},  
-			{sizes: '0.1deg',  expect: '100vw'},  
-			{sizes: '0.1grad', expect: '100vw'},  
+		groupName: 'Disallowed css-length units',
+		testArray: [
+			{sizes: '0.1%',    expect: '100vw'},
+			{sizes: '0.1deg',  expect: '100vw'},
+			{sizes: '0.1grad', expect: '100vw'},
 			{sizes: '0.1rad',  expect: '100vw'},
 			{sizes: '0.1turn', expect: '100vw'},
 			{sizes: '0.1s',    expect: '100vw'},
@@ -72,7 +71,7 @@ var tests = [
 		]
 	},
 	{
-		groupName: "CSS style comments",
+		groupName: 'CSS style comments',
 		testArray: [
 			{sizes: '/* */1px/* */',             expect: '1px'},
 			{sizes: ' /**/ /**/ 1px /**/ /**/ ', expect: '1px'},
@@ -81,11 +80,11 @@ var tests = [
 			{sizes: '1p/* */x',                  expect: '100vw'},
 			{sizes: '5/* */67px',                expect: '100vw'},
 			{sizes: '-/**/0',                    expect: '100vw'},
-			{sizes: '/* 50vw',                   expect: '100vw', desc: "unclosed comment"},
+			{sizes: '/* 50vw',                   expect: '100vw', desc: 'unclosed comment'}
 		]
 	},
 	{
-		groupName: "Media condition",
+		groupName: 'Media condition',
 		testArray: [
 			{sizes: '(min-width: 5px) 30vw, 50vw',   expect: '30vw'},
 			{sizes: '(min-width:0) calc(1px)',       expect: 'calc(1px)'},
@@ -111,7 +110,7 @@ var tests = [
 		]
 	},
 	{
-		groupName: "Compound media conditions",
+		groupName: 'Compound media conditions',
 		testArray: [
 			{sizes: '(min-width:1px) and (min-width:1px) 1px', expect: '1px'},
 			// "all" is allowed in a <media-query> but not allowed in a <media-condition>.
@@ -158,10 +157,10 @@ var tests = [
 		]
 	},
 	{
-		groupName: "Eccentric syntax",
+		groupName: 'Eccentric syntax',
 		testArray: [
-			{sizes: '(min-width:0) 55px,,,,,',   expect: '55px', desc: "multiple trailing commas"},
-			{sizes: ',,,,(min-width:0) 55px',    expect: '55px', desc: "multiple leading commas"},
+			{sizes: '(min-width:0) 55px,,,,,',   expect: '55px', desc: 'multiple trailing commas'},
+			{sizes: ',,,,(min-width:0) 55px',    expect: '55px', desc: 'multiple leading commas'},
 			{sizes: '-0e-0px',                   expect: '-0e-0px'}, // seems legit ?!
 			{sizes: '+0.11e+01px',               expect: '100vw'},
 			{sizes: '0.2e1px',                   expect: '0.2e1px'},
@@ -200,3 +199,26 @@ var tests = [
 		]
 	}
 ];
+
+function runTest(data) {
+  var origAttr = data.sizes,
+      parsed = window.parseSizes(origAttr);
+
+  test( (data.desc || origAttr) , function() {
+    assert.equal(parsed, data.expect);
+  });
+}
+
+function runTestGroup(testGroup) {
+  // Group Tests
+  var testArray = testGroup.testArray;
+  suite( testGroup.groupName, function() {
+    for (var j = 0; j < testArray.length; j++) {
+      runTest(testArray[j]);
+    }
+  });
+}
+
+for (var i = 0; i < data.length; i++) {
+  runTestGroup(data[i]);
+}

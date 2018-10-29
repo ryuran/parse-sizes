@@ -1,0 +1,30 @@
+{
+  "name": "@ryuran/parse-sizes",
+  "version": "1.0.0",
+  "description": "A non-strict but robust javascript parser for the [HTML5 sizes] (http://www.w3.org/html/wg/drafts/html/master/embedded-content.html#attr-img-sizes) attribute, based on the [WHATWG reference algorithm] (https://html.spec.whatwg.org/multipage/embedded-content.html#parse-a-sizes-attribute). It has an extensive test suite.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "test": "karma start --single-run --browsers ChromeHeadless ./karma.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryuran/parse-sizes.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ryuran/parse-sizes/issues"
+  },
+  "homepage": "https://github.com/ryuran/parse-sizes#readme",
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.2.0",
+    "eslint": "^5.8.0",
+    "karma": "^3.1.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-mocha": "^1.3.0",
+    "mocha": "^5.2.0"
+  }
+}
