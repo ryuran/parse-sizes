@@ -36,7 +36,7 @@
       factory((root.commonJsStrict = {}));
   }
 }(typeof self !== 'undefined' ? self : this, function(exports) {
-  exports.parseSizes = function parseSizes(strValue) {
+  exports = function parseSizes(strValue) {
     // (Percentage CSS lengths are not allowed in this case, to avoid confusion:
     // https://html.spec.whatwg.org/multipage/embedded-content.html#valid-source-size-list
     // CSS allows a single optional plus or minus sign:
