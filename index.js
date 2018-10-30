@@ -27,16 +27,20 @@
 (function(root, factory) {
   if (typeof define === 'function' && define.amd) {
       // AMD. Register as an anonymous module.
-      define([ 'exports' ], factory);
-  } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
-      // CommonJS
-      factory(exports);
+      define(function() {
+          return (root.returnExportsGlobal = factory());
+      });
+  } else if (typeof module === 'object' && module.exports) {
+      // Node. Does not work with strict CommonJS, but
+      // only CommonJS-like environments that support module.exports,
+      // like Node.
+      module.exports = factory();
   } else {
       // Browser globals
-      factory((root.commonJsStrict = {}));
+      root.returnExportsGlobal = factory();
   }
-}(typeof self !== 'undefined' ? self : this, function(exports) {
-  exports = function parseSizes(strValue) {
+}(typeof self !== 'undefined' ? self : this, function() {
+  return function parseSizes(strValue) {
     // (Percentage CSS lengths are not allowed in this case, to avoid confusion:
     // https://html.spec.whatwg.org/multipage/embedded-content.html#valid-source-size-list
     // CSS allows a single optional plus or minus sign:
