@@ -24,10 +24,19 @@
  * or "100vw" if all valid media conditions evaluate to false.
  *
  */
-
-(function(window) {
-  window.parseSizes = function parseSizes(strValue) {
-
+(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+      // AMD. Register as an anonymous module.
+      define([ 'exports' ], factory);
+  } else if (typeof exports === 'object' && typeof exports.nodeName !== 'string') {
+      // CommonJS
+      factory(exports);
+  } else {
+      // Browser globals
+      factory((root.commonJsStrict = {}));
+  }
+}(typeof self !== 'undefined' ? self : this, function(exports) {
+  exports.parseSizes = function parseSizes(strValue) {
     // (Percentage CSS lengths are not allowed in this case, to avoid confusion:
     // https://html.spec.whatwg.org/multipage/embedded-content.html#valid-source-size-list
     // CSS allows a single optional plus or minus sign:
@@ -155,7 +164,7 @@
     unparsedSizesList = parseComponentValues(strValue);
     unparsedSizesListLength = unparsedSizesList.length;
 
-  // For each unparsed size in unparsed sizes list:
+    // For each unparsed size in unparsed sizes list:
     for (i = 0; i < unparsedSizesListLength; i++) {
       unparsedSize = unparsedSizesList[ i ];
 
@@ -212,6 +221,5 @@
     // If the above algorithm exhausts unparsed sizes list without returning a
     // size value, return 100vw.
     return '100vw';
-  }
-
-}(window));
+  };
+}));
