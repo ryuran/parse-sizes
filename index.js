@@ -28,7 +28,7 @@
   if (typeof define === 'function' && define.amd) {
       // AMD. Register as an anonymous module.
       define(function() {
-          return (root.returnExportsGlobal = factory());
+          return (root.parseSizes = factory());
       });
   } else if (typeof module === 'object' && module.exports) {
       // Node. Does not work with strict CommonJS, but
@@ -37,7 +37,7 @@
       module.exports = factory();
   } else {
       // Browser globals
-      root.returnExportsGlobal = factory();
+      root.parseSizes = factory();
   }
 }(typeof self !== 'undefined' ? self : this, function() {
   return function parseSizes(strValue) {
